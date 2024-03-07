@@ -6,14 +6,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class ProductDto extends BaseModel {
     private String title;
     private Double price;
-    private Category category;
-    private String description;
+    private CategoryDto category;
     private String imageUrl;
 
 }

@@ -1,5 +1,6 @@
 package com.nagarro.productservice.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
@@ -11,11 +12,14 @@ public class Product extends BaseModel{
     private String title;
     private Double price;
     // cardinality between product and category
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Category category;
 
     private String description;
 
     private String imageUrl;
+
+
+
 
 }

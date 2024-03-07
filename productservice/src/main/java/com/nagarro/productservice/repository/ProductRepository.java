@@ -35,7 +35,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Optional<Product> findById(Long id);
 
-    ProductDto save(ProductDto productDto);
+    Product save(Product product);
 
    @Query("select p from Product p where p.price >100 and p.description like '%Iphone%'")
     List<Product> hqlQueriesExample();

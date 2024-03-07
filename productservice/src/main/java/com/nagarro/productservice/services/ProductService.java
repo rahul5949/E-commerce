@@ -9,13 +9,13 @@ import java.util.List;
 public interface ProductService {
     ProductDto getSingleProduct(Long id) throws ProductNotFoundException;
 
-    ProductDto addNewProduct(Product product);
+    ProductDto addNewProduct(ProductDto productDto);
 
     List<ProductDto> getAllProducts();
 
-    ProductDto updateProduct(Long id, Product product) throws ProductNotFoundException;
+    ProductDto updateProduct(Long id, ProductDto productDto) throws ProductNotFoundException;
 
-    ProductDto replaceProduct(Long id, Product product) throws ProductNotFoundException;
+    ProductDto replaceProduct(Long id, ProductDto productDto) throws ProductNotFoundException;
 
     void deleteProduct(Long id);
 }

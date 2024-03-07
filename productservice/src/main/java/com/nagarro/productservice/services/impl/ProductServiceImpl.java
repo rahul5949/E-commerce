@@ -1,7 +1,9 @@
 package com.nagarro.productservice.services.impl;
 
+import com.nagarro.productservice.dto.CategoryDto;
 import com.nagarro.productservice.dto.ProductDto;
 import com.nagarro.productservice.exceptions.ProductNotFoundException;
+import com.nagarro.productservice.mapper.CategoryMapper;
 import com.nagarro.productservice.mapper.ProductMapper;
 import com.nagarro.productservice.model.Category;
 import com.nagarro.productservice.model.Product;
@@ -23,12 +25,15 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductMapper productMapper;
 
+    private  final CategoryMapper categoryMapper;
+
     @Autowired
-    public  ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository, ProductMapper productMapper){
+    public  ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository, ProductMapper productMapper, CategoryMapper categoryMapper){
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.productMapper = productMapper;
 
+        this.categoryMapper = categoryMapper;
     }
 
     @Override
@@ -41,15 +46,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDto addNewProduct(Product product) {
-        Optional<Category> optionalCategory = categoryRepository.findByName(product.getCategory().getName());
+    public ProductDto addNewProduct(ProductDto productDto) {
+        Optional<Category> optionalCategory = categoryRepository
+                .findByName(categoryMapper.categoryDtoToCategory(productDto.getCategory()).getName());
 
-        if(optionalCategory.isEmpty()){
-          product.setCategory(categoryRepository.save(product.getCategory()));
-        } else {
-            product.setCategory(optionalCategory.get());
-        }
-        return productMapper.productToProductDto(productRepository.save(product));
+        optionalCategory.ifPresent(category -> productDto.setCategory(categoryMapper.categoryToCategoryDto(category)));
+        return productMapper.productToProductDto(productRepository.save(productMapper.productDtoToProduct(productDto)));
     }
 
     @Override
@@ -61,20 +63,20 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDto updateProduct(Long id, Product product) throws ProductNotFoundException {
+    public ProductDto updateProduct(Long id, ProductDto productDto) throws ProductNotFoundException {
         Optional<Product> productOptional = productRepository.findById(id);
         if(productOptional.isEmpty()){
             throw new ProductNotFoundException("Product with ID" +id + " not exist");
         }
-        return productRepository.save(productMapper.productToProductDto(productOptional.get()));
+        return productMapper.productToProductDto(productRepository.save(productMapper.updateProductFromDTO(productDto, productOptional.get())));
     }
     @Override
-    public ProductDto replaceProduct(Long id, Product product) throws ProductNotFoundException {
+    public ProductDto replaceProduct(Long id, ProductDto productDto) throws ProductNotFoundException {
         Optional<Product> productOptional = productRepository.findById(id);
         if(productOptional.isEmpty()){
             throw new ProductNotFoundException("the product with ID" + id  + " does not exist");
         }
-        return productRepository.save(productMapper.productToProductDto(productOptional.get()));
+        return productMapper.productToProductDto(productRepository.save(productMapper.productDtoToProduct(productDto)));
     }
 
     @Override
