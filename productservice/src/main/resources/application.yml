@@ -1,0 +1,29 @@
+logging:
+  level:
+    org.springframework.web: TRACE
+    org.springframework.security: TRACE
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    url: ${PRODUCT_SERVICE_DB_URL}
+    username: ${PRODUCT_SERVICE_DB_USERNAME}
+  #  password: ${PRODUCT_SERVICE_DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  flyway:
+    baselineOnMigrate: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${USER_SERVICE_ISSUER_URI}
+server:
+  port: 8282
+
+  #jdbc:mysql://productservice.cbqiieecug6c.eu-north-1.rds.amazonaws.com:3306/productservice
+  #productservice
+  #productservice
+

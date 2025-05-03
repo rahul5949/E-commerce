@@ -1,6 +1,5 @@
 package com.nagarro.productservice.services.impl;
 
-import com.nagarro.productservice.dto.CategoryDto;
 import com.nagarro.productservice.dto.ProductDto;
 import com.nagarro.productservice.exceptions.ProductNotFoundException;
 import com.nagarro.productservice.mapper.CategoryMapper;

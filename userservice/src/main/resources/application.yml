@@ -1,0 +1,59 @@
+logging:
+  level:
+    org.springframework.web: TRACE
+    org.springframework.security: TRACE
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    url: ${USER_SERVICE_DB_URL}
+    username: ${USER_SERVICE_DB_USERNAME}
+    password: ${USER_SERVICE_DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  flyway:
+    baselineOnMigrate: true
+  redis:
+    host: localhost
+    port: 6379
+  security:
+    user:
+      name: user
+      password: password
+    oauth2:
+      authorizationserver:
+        client:
+          oidc-client:
+            registration:
+              client-id: "oidc-client"
+              client-secret: "{noop}secret"
+              client-authentication-methods:
+                - "client_secret_basic"
+              authorization-grant-types:
+                - "authorization_code"
+                - "refresh_token"
+              redirect-uris:
+                - "http://127.0.0.1:8080/login/oauth2/code/oidc-client"
+              post-logout-redirect-uris:
+                - "http://127.0.0.1:8080/"
+              scopes:
+                - "openid"
+                - "profile"
+            require-authorization-consent: true
+
+server:
+  port: 8082
+
+security:
+  jwt:
+    secret-key: c2VjcmV0LXNwcmluZy1qd3Qta2V5LXRlc3QtMzJieXRlcw==
+    expiration-time: 3600000 # 1 hour in milliseconds
+    refresh-expiration-time: 604800000 # 7 days in milliseconds
+
+jwt:
+  filter:
+    enabled: false
+auth:
+  mode: inmemory
